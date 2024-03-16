@@ -1,6 +1,7 @@
 # GPTs-EasyConfig
 ![Static Badge](https://img.shields.io/badge/license-MIT-blue)
 
+![image](https://github.com/Ruijian-Zha/GPTs-EasyConfig/assets/55631456/c0b6c513-5d8b-456b-83b9-ee877fefb29f)
 
 https://github.com/Ruijian-Zha/GPTs-EasyConfig/assets/55631456/5760e02e-87be-48ff-9000-f45b4100e083
 
