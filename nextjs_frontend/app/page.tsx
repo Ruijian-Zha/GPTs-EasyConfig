@@ -2,11 +2,16 @@
 
 import { Icons } from "@/components/icons";
 import IframeLoader from "@/components/interactive/IframeLoader"; // Adjust the import path as necessary
+import ExcalidrawWrapper from "@/components/interactive/excalidraw"; // Adjust the import path as necessary
 import { Message } from "ai/react";
 import { useRef, useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import { motion } from "framer-motion";
 import { useChat } from "ai/react";
+import {
+	MultiFileDropzone,
+	type FileState,
+  } from '@/components/MultiFileDropzone';
 
 // @ts-ignore
 const roleToColorMap: Record<Message["role"], string> = {
@@ -96,6 +101,21 @@ export default function Chat() {
     }, 0); // Timeout set to 0 to delay scroll until after the render cycle
   }, [messages]);
 
+  const [fileStates, setFileStates] = useState<FileState[]>([]);
+
+  function updateFileProgress(key: string, progress: FileState['progress']) {
+    setFileStates((fileStates) => {
+      const newFileStates = structuredClone(fileStates);
+      const fileState = newFileStates.find(
+        (fileState) => fileState.key === key,
+      );
+      if (fileState) {
+        fileState.progress = progress;
+      }
+      return newFileStates;
+    });
+  }
+
   return (
     <main
       className={
@@ -141,7 +161,20 @@ export default function Chat() {
             </span>
           )}
           <div ref={messagesEndRef} />
+
+		  {nohasReceivedResponse && (
+			<div className="pt-4">
+				<MultiFileDropzone
+				value={fileStates}
+				onChange={(files: FileState[]) => {
+					setFileStates(files);
+				}}
+				/>
+			</div>
+			)}
         </div>
+
+
 
         <form
           onSubmit={modifiedHandleSubmit}
@@ -156,7 +189,9 @@ export default function Chat() {
         </form>
       </div>
 
-      {!nohasReceivedResponse && <IframeLoader shouldDisplay={true} />}
+      {/* {!nohasReceivedResponse && <IframeLoader shouldDisplay={true} />} */}
+      {!nohasReceivedResponse && <ExcalidrawWrapper />}
+
     </main>
   );
 }
